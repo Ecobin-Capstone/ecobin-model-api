@@ -40,7 +40,7 @@ def index():
     return "halo dunia real"
 
 
-@app.get("/api")
+@app.post("/api")
 def api():
     if 'image' not in request.files:
         return jsonify({'message': 'No image file sent'}), 400
