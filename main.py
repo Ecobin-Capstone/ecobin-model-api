@@ -1,6 +1,9 @@
 import os
 import cv2
+import io
+from PIL import Image
 import keras
+from keras.preprocessing import image
 import numpy as np
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
@@ -15,12 +18,12 @@ ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
 
 
 def preprocess_image(bytes):
-    image_data = bytes
-    image = cv2.imdecode(np.frombuffer(image_data, np.uint8), cv2.IMREAD_COLOR)
-    image = cv2.resize(image, (256, 256))
-    image = image / 255.0
-    image = np.expand_dims(image, axis=0)
-    return image
+    img = Image.open(io.BytesIO(bytes))
+    img = img.convert("RGB")
+    img = img.resize((256, 256))
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+    return img_array
 
 
 def predict(image):
