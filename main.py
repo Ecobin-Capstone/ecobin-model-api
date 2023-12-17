@@ -1,5 +1,4 @@
 import os
-import cv2
 import io
 from PIL import Image
 import keras
